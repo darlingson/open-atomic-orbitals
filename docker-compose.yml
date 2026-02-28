@@ -1,0 +1,84 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: mf_postgres
+    environment:
+      POSTGRES_USER: mf_user
+      POSTGRES_PASSWORD: mf_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: mf_redis
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: mf_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  customerservice:
+    build: ./src/Services/CustomerService
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "5001:8080"
+
+  accountservice:
+    build: ./src/Services/AccountService
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "5002:8080"
+
+  loanservice:
+    build: ./src/Services/LoanService
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "5003:8080"
+
+  ledgerservice:
+    build: ./src/Services/LedgerService
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "5004:8080"
+
+  transactionengine:
+    build: ./src/Services/TransactionEngine
+    depends_on:
+      - postgres
+      - rabbitmq
+      - redis
+    ports:
+      - "5005:8080"
+
+  apigateway:
+    build: ./src/Services/ApiGateway
+    depends_on:
+      - customerservice
+      - accountservice
+      - loanservice
+    ports:
+      - "5000:8080"
+
+volumes:
+  postgres_data:
