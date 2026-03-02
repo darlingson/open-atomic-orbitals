@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: mf_user
       POSTGRES_PASSWORD: mf_password
     ports:
-      - "5432:5432"
+      - "5436:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -17,14 +17,14 @@ services:
     image: redis:7
     container_name: mf_redis
     ports:
-      - "6379:6379"
+      - "6380:6379"
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: mf_rabbitmq
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "5674:5672"
+      - "15674:15672"
 
   customerservice:
     build: ./src/Services/CustomerService
