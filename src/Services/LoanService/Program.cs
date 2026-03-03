@@ -1,4 +1,4 @@
-using core.Services;
+using LoanService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
