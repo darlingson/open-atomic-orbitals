@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option csharp_namespace = "BuildingBlocks.Protos";
+
+package onboarding;
+
+service TransactionEngineOnboarding {
+  rpc RegisterCustomer (RegisterCustomerRequest)
+      returns (RegisterCustomerResponse);
+}
+
+message RegisterCustomerRequest {
+  string full_name = 1;
+  string national_id = 2;
+  string phone_number = 3;
+  string date_of_birth = 4;
+}
+
+message RegisterCustomerResponse {
+  string customer_id = 1;
+  string status = 2;
+  string message = 3;
+}
